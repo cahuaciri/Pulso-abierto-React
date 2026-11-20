@@ -3,6 +3,7 @@ import QueryControls from '../components/QueryControls'
 import StatusMessage from '../components/StatusMessage'
 import CryptoList from '../components/CryptoList'
 import { fetchCryptos } from '../services/cryptoService'
+import { useFavouritesStore } from '../store/favoritesStore'
 import type { Crypto } from '../types/crypto'
 import type { Currency } from '../types/api'
 
@@ -12,6 +13,10 @@ function HomePage() {
   const [submittedSearch, setSubmittedSearch] = useState('')
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('usd')
   const [onlyFavourites, setOnlyFavourites] = useState(false)
+
+  const favouriteIds = useFavouritesStore(
+    (state) => state.favouriteIds,
+  )
 
   const [status, setStatus] = useState<
     'initial' | 'loading' | 'success' | 'empty' | 'error'
@@ -33,15 +38,7 @@ function HomePage() {
       controller.signal,
     )
 
-    setCryptos((previousCryptos) =>
-      result.map((crypto) => ({
-        ...crypto,
-        isFavourite:
-          previousCryptos.find((previous) => previous.id === crypto.id)
-            ?.isFavourite ?? false,
-      })),
-    )
-
+    setCryptos(result)
     setStatus(result.length > 0 ? 'success' : 'empty')
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
@@ -58,11 +55,11 @@ function HomePage() {
   }
 }
 
-loadCryptos()
+  loadCryptos()
 
-return () => {
-  controller.abort()
-}
+  return () => {
+    controller.abort()
+  }
 }, [selectedCurrency, requestKey])
 
 const handleSearch = () => {
@@ -74,25 +71,16 @@ const handleRetry = () => {
   setRequestKey((previous) => previous + 1)
 }
 
-const handleToggleFavourite = (id: string) => {
-  setCryptos((previousCryptos) =>
-    previousCryptos.map((crypto) =>
-      crypto.id === id
-        ? { ...crypto, isFavourite: !crypto.isFavourite }
-        : crypto,
-    ),
-  )
-}
-
 const filteredCryptos = cryptos.filter((crypto) => {
   const matchesSearch = crypto.name
     .toLowerCase()
     .includes(submittedSearch.toLowerCase())
 
-  const matchesFavourites = !onlyFavourites || crypto.isFavourite
+  const matchesFavourites = 
+    !onlyFavourites || favouriteIds.includes(crypto.id)
 
   return matchesSearch && matchesFavourites
-  })
+})
 
   return (
     <main className="container">
@@ -126,7 +114,6 @@ const filteredCryptos = cryptos.filter((crypto) => {
           <CryptoList
             cryptos={filteredCryptos}
             currency={selectedCurrency}
-            onToggleFavourite={handleToggleFavourite}
           />
         )}
       </section>

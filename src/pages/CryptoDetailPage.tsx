@@ -1,11 +1,20 @@
 import { Link, useParams } from 'react-router-dom'
 import { initialCryptos } from '../data/cryptos'
+import { useFavouritesStore } from '../store/favoritesStore'
 
 function CryptoDetailPage() {
     const { id } = useParams()
 
     const crypto = initialCryptos.find(
         (item) => item.id === id,
+    )
+
+    const isFavourite = useFavouritesStore((state) =>
+        crypto ? state.favouriteIds.includes(crypto.id) : false,
+    )
+
+    const toggleFavourite = useFavouritesStore(
+        (state) => state.toggleFavourite,
     )
 
     if (!crypto) {
@@ -56,8 +65,17 @@ function CryptoDetailPage() {
 
             <p>
               <strong>Favorita:</strong>{' '}
-              {crypto.isFavourite ? 'Sí' : 'No'}
+              {isFavourite ? 'Sí' : 'No'}
             </p>
+
+            <button
+                type="button"
+                className="secondary-button"
+                onClick={() => toggleFavourite(crypto.id)}
+                aria-pressed={isFavourite}
+            >
+                {isFavourite ? '★ Quitar de favoritos' : '☆ Agregar a favoritos'}
+            </button>
 
             <Link to="/" className="secondary-button">
                 Volver a cotizaciones

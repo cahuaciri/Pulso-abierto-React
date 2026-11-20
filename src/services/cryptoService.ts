@@ -41,7 +41,6 @@ export async function fetchCryptos(
         {
           ...crypto,
           price,
-          isFavourite: false,
         },
     ]
   })
