@@ -120,4 +120,4 @@ El proyecto utiliza integración con GitHub para mantener el despliegue actualiz
 
 ## Variables de entorno
 
-La configuración actial del proyecto no requiere variables de entorno para su ejecución.
+La configuración actual del proyecto no requiere variables de entorno para su ejecución.
