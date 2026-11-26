@@ -4,7 +4,7 @@ Aplicación web desarrollada con React, TypeScript y Vite para consultar cotizac
 
 La aplicación permite consultar Bitcoin, Ethereum y Solana mediante la API de CoinGecko.
 
-**Aplicación publicada:** https://pulso-abierto-react.vercel.app
+**Aplicación publicada:** https://pulso-abierto-react-zeta.vercel.app
 
 ## Tecnologías utilizadas
 
@@ -114,7 +114,7 @@ Luego de la modificación se verificó que el proyecto compilara correctamente y
 
 La aplicación está publicada en vercel:
 
-**hhhpulsoabiertovercel**
+**https://pulso-abierto-react-zeta.vercel.app**
 
 El proyecto utiliza integración con GitHub para mantener el despliegue actualizado a partir de los cambios enviados al repositorio.
 
