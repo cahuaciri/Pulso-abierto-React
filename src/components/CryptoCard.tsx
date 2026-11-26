@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Crypto } from '../types/crypto'
 import type { Currency } from '../types/api'
 import { useFavouritesStore } from '../store/favoritesStore'
+import { formatCurrency } from '../utils/formatCurrency'
 
 interface CryptoCardProps {
   crypto: Crypto
@@ -35,10 +36,7 @@ function CryptoCard({ crypto, currency }: CryptoCardProps) {
     <p className="crypto-price-label">Precio actual</p>
 
     <p className="crypto-price">
-      {new Intl.NumberFormat('es-AR', {
-        style: 'currency',
-        currency: currency.toUpperCase(),
-      }).format(crypto.price)}
+      {formatCurrency(crypto.price, currency)}
     </p>
 
     <div className="card-actions">

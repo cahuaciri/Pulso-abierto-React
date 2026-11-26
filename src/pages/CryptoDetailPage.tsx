@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { initialCryptos } from '../data/cryptos'
 import { useFavouritesStore } from '../store/favoritesStore'
+import { formatCurrency } from '../utils/formatCurrency'
 
 function CryptoDetailPage() {
     const { id } = useParams()
@@ -57,10 +58,7 @@ function CryptoDetailPage() {
 
             <p>
               <strong>Precio:</strong>{' '}
-              {new Intl.NumberFormat('es-AR', {
-                style: 'currency',
-                currency: 'USD',
-              }).format(crypto.price)}
+              {formatCurrency(crypto.price, 'usd')}
             </p>
 
             <p>
